@@ -1,0 +1,17 @@
+{
+  "name": "Hood Boss Team Lead OS",
+  "short_name": "HB Lead OS",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07111c",
+  "theme_color": "#0b2133",
+  "description": "Offline-capable Team Lead selection, readiness, interview, and field execution system for Hood Boss.",
+  "icons": [
+    {
+      "src": "assets/nexus-core.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

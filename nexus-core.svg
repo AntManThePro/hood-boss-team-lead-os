@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title desc">
+<title id="title">NEXUS Core</title>
+<desc id="desc">Nested hexagonal synapse mark with a central node.</desc>
+<defs>
+  <linearGradient id="g" x1="0" x2="1">
+    <stop stop-color="#00ff87"/>
+    <stop offset=".5" stop-color="#60efff"/>
+    <stop offset="1" stop-color="#ff0080"/>
+  </linearGradient>
+</defs>
+<path d="M50 5 L90 28 V72 L50 95 L10 72 V28 Z" fill="#00ff8711" stroke="url(#g)" stroke-width="3"/>
+<path d="M50 18 L78 34 V66 L50 82 L22 66 V34 Z" fill="#60efff08" stroke="#60efff" stroke-width="2"/>
+<circle cx="50" cy="50" r="13" fill="none" stroke="#ff0080" stroke-width="3"/>
+<path d="M50 5V37M50 63v32M10 28l27 15M63 57l27 15M90 28 63 43M37 57 10 72" stroke="#ffcc00" stroke-width="2" opacity=".75"/>
+<circle cx="50" cy="50" r="5" fill="#ff0080"/>
+</svg>
