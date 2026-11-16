@@ -124,6 +124,10 @@ textarea{min-height:92px;resize:vertical}.candidate-list{display:grid;gap:8px}.c
             <div id="activeSummary" class="empty">Create or select a candidate to begin.</div>
           </div>
         </div>
+        <div class="card" id="upcomingCard" style="margin-top:14px">
+          <div class="kicker">Upcoming Interviews</div>
+          <div id="upcomingList" style="margin-top:10px"></div>
+        </div>
         <div class="grid2" style="margin-top:14px">
           <div class="card">
             <div class="section-title"><div><div class="kicker">Pipeline</div><h3>Candidates</h3></div><button class="btn no-print" onclick="openNewCandidate()">Add</button></div>
@@ -278,6 +282,34 @@ const sourceCards=[
 
 function defaultState(){return{version:1,candidates:[],activeId:null,audit:[]}}
 let state=load();
+// Scheduled lead interviews (FieldPulse, verified Mon Nov 16, 2026).
+// Seeded so every interviewer opening this OS sees the same starting records.
+// Local-first: notes and scores stay in each browser; use Backup / Restore to share them.
+const SEEDED_INTERVIEWS=[
+ {id:'seed-johns-interview-2026-11-17',name:'John Pinkerton',employeeId:'',role:'Technician',interviewer:'Anthony Albert',
+  scheduled:'Tue Nov 17, 10:00 p.m.',source:'FieldPulse Shop Time #55695 — Confirmed',
+  location:'2511 Merrell Road, Dallas, TX 75229 (as shown on the FieldPulse record)',
+  crew:'John Pinkerton, Anthony Albert, Israel Ramirez',
+  startNote:'Lead interview scheduled Tue Nov 17, 10:00 p.m. — FieldPulse Shop Time #55695, Confirmed. Location as shown on the record: 2511 Merrell Road, Dallas, TX 75229. People on the record: John Pinkerton, Anthony Albert, Israel Ramirez.'},
+ {id:'seed-dannys-interview-2026-11-18',name:'Danny Galvan',employeeId:'',role:'Technician',interviewer:'Anthony Albert',
+  scheduled:'Wed Nov 18, 9:30–10:00 p.m.',source:'FieldPulse Shop Time #55696 — Confirmed',
+  location:'2511 Merrell Road, Dallas, TX 75229 (as shown on the FieldPulse record)',
+  crew:'Anthony Albert, Israel Ramirez, Danny Galvan',
+  startNote:'Lead interview scheduled Wed Nov 18, 9:30–10:00 p.m. — FieldPulse Shop Time #55696, Confirmed. Location as shown on the record: 2511 Merrell Road, Dallas, TX 75229. People on the record: Anthony Albert, Israel Ramirez, Danny Galvan.'}
+];
+function seedCandidate(s){
+ return{id:s.id,name:s.name,employeeId:s.employeeId,role:s.role,interviewer:s.interviewer,createdAt:new Date().toISOString(),startNote:s.startNote,
+ scheduled:s.scheduled,source:s.source,location:s.location,crew:s.crew,
+ gates:{},gateNotes:{},answers:{},scores:{},field:{},workflow:'onway',midComm:commTypes[0],midOutcome:'',approvalComm:commTypes[0],approvalOutcome:''};
+}
+function ensureSeeded(){
+ if(!Array.isArray(state.candidates))state.candidates=[];
+ if(!Array.isArray(state.audit))state.audit=[];
+ let added=[];
+ SEEDED_INTERVIEWS.forEach(s=>{if(!state.candidates.some(c=>c.id===s.id)){state.candidates.push(seedCandidate(s));added.push(s.name)}});
+ if(added.length){if(!state.activeId)state.activeId=state.candidates[0].id;log('Scheduled interviews added','From FieldPulse: '+added.join('; '));localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+}
+ensureSeeded();
 function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||defaultState()}catch{return defaultState()}}
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));renderAll()}
 function active(){return state.candidates.find(c=>c.id===state.activeId)||null}
@@ -348,6 +380,11 @@ function renderDashboard(){
  document.getElementById('statReady').textContent=state.candidates.filter(x=>recommend(x).cls==='rec-good').length;
  document.getElementById('statInterviews').textContent=state.candidates.filter(x=>interviewScore(x).answered>0).length;
  document.getElementById('statActive').textContent=c?c.name.split(' ')[0]:'—';
+ const up=state.candidates.filter(x=>x.scheduled),upCard=document.getElementById('upcomingCard');
+ if(!up.length){upCard.style.display='none'}else{
+  upCard.style.display='';
+  document.getElementById('upcomingList').innerHTML=up.map(x=>`<div class="candidate-item ${x.id===state.activeId?'active':''}" onclick="selectCandidate('${x.id}')"><div><b>${esc(x.name)}</b> — ${esc(x.scheduled)}<small>${esc(x.source)} • ${esc(x.location)}</small><small>On the record: ${esc(x.crew)}</small></div><span class="chip">INTERVIEW</span></div>`).join('');
+ }
  document.getElementById('candidateList').innerHTML=state.candidates.length?state.candidates.map(x=>{
   const r=recommend(x);return `<div class="candidate-item ${x.id===state.activeId?'active':''}" onclick="selectCandidate('${x.id}')"><div><b>${esc(x.name)}</b><small>${esc(x.role)}${x.employeeId?' • '+esc(x.employeeId):''}</small></div><span class="chip ${r.cls==='rec-good'?'good':r.cls==='rec-bad'?'bad':'warn'}">${gateScore(x).pct}%</span></div>`
  }).join(''):'<div class="empty">No candidate records yet.</div>';
