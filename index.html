@@ -290,15 +290,20 @@ let state=load();
 // Local-first: notes and scores stay in each browser; use Backup / Restore to share them.
 const SEEDED_INTERVIEWS=[
  {id:'seed-johns-interview-2026-11-17',name:'John Pinkerton',employeeId:'',role:'Technician',interviewer:'Anthony Albert',
-  scheduled:'Tue Nov 17, 10:00 p.m.',source:'FieldPulse Shop Time #55695 — Confirmed',
+  scheduled:'Tue Nov 17, 9:00–10:00 p.m.',source:'FieldPulse Shop Time #55695 — Confirmed',
   location:'2511 Merrell Road, Dallas, TX 75229 (as shown on the FieldPulse record)',
   crew:'John Pinkerton, Anthony Albert, Israel Ramirez',
-  startNote:'Lead interview scheduled Tue Nov 17, 10:00 p.m. — FieldPulse Shop Time #55695, Confirmed. Location as shown on the record: 2511 Merrell Road, Dallas, TX 75229. People on the record: John Pinkerton, Anthony Albert, Israel Ramirez.'},
+  startNote:'Lead interview scheduled Tue Nov 17, 9:00–10:00 p.m. — FieldPulse Shop Time #55695, Confirmed. Location as shown on the record: 2511 Merrell Road, Dallas, TX 75229. People on the record: John Pinkerton, Anthony Albert, Israel Ramirez.'},
  {id:'seed-dannys-interview-2026-11-18',name:'Danny Galvan',employeeId:'',role:'Technician',interviewer:'Anthony Albert',
   scheduled:'Wed Nov 18, 9:30–10:00 p.m.',source:'FieldPulse Shop Time #55696 — Confirmed',
   location:'2511 Merrell Road, Dallas, TX 75229 (as shown on the FieldPulse record)',
   crew:'Anthony Albert, Israel Ramirez, Danny Galvan',
-  startNote:'Lead interview scheduled Wed Nov 18, 9:30–10:00 p.m. — FieldPulse Shop Time #55696, Confirmed. Location as shown on the record: 2511 Merrell Road, Dallas, TX 75229. People on the record: Anthony Albert, Israel Ramirez, Danny Galvan.'}
+  startNote:'Lead interview scheduled Wed Nov 18, 9:30–10:00 p.m. — FieldPulse Shop Time #55696, Confirmed. Location as shown on the record: 2511 Merrell Road, Dallas, TX 75229. People on the record: Anthony Albert, Israel Ramirez, Danny Galvan.'},
+ {id:'seed-michaels-interview-2026-11-19',name:'Michael Lewis',employeeId:'',role:'Technician',interviewer:'Anthony Albert',
+  scheduled:'Thu Nov 19, 8:00 p.m.',source:'FieldPulse Shop Time #55786 — Confirmed',
+  location:'2511 Merrell Road, Dallas, Texas 75229 (as shown on the FieldPulse record)',
+  crew:'Israel Ramirez, Anthony Albert, Michael Lewis',
+  startNote:'Lead interview scheduled Thu Nov 19, 8:00 p.m. (arrival 7:45–8:15 p.m.) — FieldPulse Shop Time #55786, Confirmed. Location as shown on the record: 2511 Merrell Road, Dallas, Texas 75229. People on the record: Israel Ramirez, Anthony Albert, Michael Lewis.'}
 ];
 function seedCandidate(s){
  return{id:s.id,name:s.name,employeeId:s.employeeId,role:s.role,interviewer:s.interviewer,createdAt:new Date().toISOString(),startNote:s.startNote,
